@@ -1,0 +1,8 @@
+HttpCliendSide ?
+
+What all we can send?
+- Header, 
+- body, -----> INPUT FOR POST REQUEST 
+- query,  -----> INPUT FOR GET REQUEST THROUGH URL
+- params, -----> INPUT FOR GET REQUEST THROUGH URL
+
