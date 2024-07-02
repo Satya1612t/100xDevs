@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <!-- <link href="style.css" rel="stylesheet" type="text/css" /> -->
+</head>
+<script>
+    let timeout;
+    function debounceCalculated() {
+
+        
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            calculateSI();
+            
+        }, 1000)
+        
+    }
+
+    function calculateSI() {
+
+        const p = document.getElementById('principal').value;
+        const r = document.getElementById('rate').value;
+
+        fetch('https://sum-server.100xdevs.com/sum?a= ' + p + '&b= ' + r)
+            .then(function (response) {
+                response.text()
+                    .then(function (data) {
+                        document.getElementById('result').innerHTML = data;
+                    })
+            })
+
+
+    } 
+</script>
+
+<body>
+    <input oninput="debounceCalculated()" type="text" id="principal" />
+    <br>
+    <br>
+    <input oninput="debounceCalculated()" type="text" id="rate" />
+    <br>
+    <br>
+
+
+    <div id="result"></div>
+
+</body>
+
+</html>
