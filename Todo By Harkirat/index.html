@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo - Cohort</title>
+</head>
+
+
+<body>
+    <input type="text" id="title">
+    <br>
+    <br>
+    <input type="text" id="description" placeholder="write desc...">
+    <br>
+    <br>
+    <button onclick="addtodo()">Add Todo</button>
+    <div id="container"></div>
+
+    <script>
+        let globalID = 1;
+        function addtodo() {
+            const title = document.getElementById('title').value;
+            console.log(title);
+            const description = document.getElementById('description').value;
+    
+            const parent =  document.getElementById('container');
+    
+            parent.appendChild(createChild(title, description, globalID++))
+    
+        }
+    
+        //   1 way of append the child in dom and we have another way also which is slightly complex
+        // by which we get we can appent the child in dom
+    
+        //     const originalCotainer =  document.getElementById('container').innerHTML;
+        //     document.getElementById('container').innerHTML =  originalCotainer + `
+        //     <div>
+        //         <h4>${title}</h4>
+        //         <h6>${description}</h6>
+        //         <button>Mark as done</button>
+        //     </div>
+        // `
+    
+        //  another way is by dom primitives document.createElement etc....
+    
+        // const outerDiv = document.createElement('div');
+        // // console.log(outerDiv)
+        // outerDiv.innerHTML = title
+        // outerDiv.innerHTML = description
+        // document.getElementById('container').appendChild(outerDiv);
+    
+        function markAsDone(todoId) {
+            const parent = document.getElementById(todoId);
+            parent.children[2].innerHTML =  "Done!"
+            
+        }
+    
+    
+    
+        //  another way is by dom primitives document.createElement etc....
+    
+        function createChild(title , description, id) {
+            const child = document.createElement('div');
+            const firstGrandChild =  document.createElement('div')
+            firstGrandChild.innerHTML = title;
+    
+            const secondGrandChild =  document.createElement('div')
+            secondGrandChild.innerHTML = description;
+    
+            const thirdGrandChild =  document.createElement('button')
+            thirdGrandChild.innerHTML = "Mark as done";
+            thirdGrandChild.setAttribute("onclick", `markAsDone(${id})`)
+    
+            child.appendChild(firstGrandChild)
+            child.appendChild(secondGrandChild)
+            child.appendChild(thirdGrandChild)
+            child.setAttribute("id", id)
+            return child;
+    
+        }
+
+
+        // not it has a state to manipulate the dom
+    
+        function updateDomAccToState(state) {
+            const parent = document.getElementById('container');
+            parent.innerHTML = "";
+
+            for (let i = 0; i < state.length; i++) {
+                const child = createChild(state[i].title, state[i].description, state[i].id)
+                parent.appendChild(child)
+            }
+
+            
+        }
+
+        // data coming form server // dynamic website it is now,
+
+        window.setTimeout(function(){
+            fetch('https://sum-server.100xdevs.com/todos')
+                .then(function(response){
+                    response.json()
+                        .then(function(finalData){
+
+                            console.log(finalData.todos);
+                            updateDomAccToState(finalData.todos)
+                        })
+                })
+        }, 5000)
+    
+    
+    
+    
+    
+    </script>
+    
+</body>
+</html>
